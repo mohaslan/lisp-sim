@@ -20,7 +20,10 @@ all:
 	swig -python -c++ lisp-sim.i
 	$(CPP) -c lisp-sim_wrap.cxx `pkg-config --cflags --libs python2`
 	$(CPP) -shared simulator.o event.o addr.o packet.o node.o link.o host.o router.o cache.o itr.o etr.o xtr.o mapdb.o logger.o lisp-sim.o lisp-sim_wrap.o -o _lispsim.so
+	swig -tcl -c++ -o lisp-sim_tclwrap.c lisp-sim.i
+	$(CPP) -c lisp-sim_tclwrap.c
+	$(CPP) -shared simulator.o event.o addr.o packet.o node.o link.o host.o router.o cache.o itr.o etr.o xtr.o mapdb.o logger.o lisp-sim.o lisp-sim_tclwrap.o -o tcllispsim.so
 clean:
-	$(RM) *.o *.so *.cxx lispsim.py lispsim.pyc
+	$(RM) *.o *.so *.cxx lispsim.py lispsim.pyc lisp-sim_tclwrap.c
 	$(RM) *.nam
 	$(RM) -r __pycache__
